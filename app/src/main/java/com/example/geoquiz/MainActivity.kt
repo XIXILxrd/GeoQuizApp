@@ -3,7 +3,6 @@ package com.example.geoquiz
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import com.example.geoquiz.databinding.ActivityMainBinding
@@ -22,11 +21,11 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.trueButton.setOnClickListener {View ->
+        binding.trueButton.setOnClickListener {
             checkAnswer(true)
         }
 
-        binding.falseButton.setOnClickListener { view: View ->
+        binding.falseButton.setOnClickListener {
             checkAnswer(false)
         }
 
@@ -35,9 +34,16 @@ class MainActivity : AppCompatActivity() {
             updateQuestion()
         }
 
-        binding.backButton?.setOnClickListener {
+        binding.backButton.setOnClickListener {
             quizViewModel.moveBack()
             updateQuestion()
+        }
+
+        binding.cheatButton.setOnClickListener {
+            val answerIsTrue = quizViewModel.currentQuestionAnswer
+            val intent = CheatActivity.newIntent(this@MainActivity, answerIsTrue)
+
+            startActivity(intent)
         }
 
         updateQuestion()
