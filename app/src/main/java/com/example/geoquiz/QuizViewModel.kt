@@ -3,9 +3,10 @@ package com.example.geoquiz
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 
-private const val TAG = "QuizViewModel"
 const val CURRENT_INDEX_KEY = "CURRENT_INDEX_KEY"
 const val IS_CHEATER_KEY = "IS_CHEATER_KEY"
+const val ANSWER_TEXT_KEY = "ANSWER_TEXT_KEY"
+const val ANSWER_IS_SHOWN = "ANSWER_IS_SHOWN"
 
 class QuizViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() {
 
@@ -25,6 +26,14 @@ class QuizViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel(
     var isCheater: Boolean
         get() = savedStateHandle[IS_CHEATER_KEY] ?: false
         set(value) = savedStateHandle.set(IS_CHEATER_KEY, value)
+
+    var answerIsShown: Boolean
+        get() = savedStateHandle[ANSWER_IS_SHOWN] ?: false
+        set(value) = savedStateHandle.set(ANSWER_IS_SHOWN, value)
+
+    var answerText: Int
+        get() = savedStateHandle[ANSWER_TEXT_KEY] ?: 0
+        set(value) = savedStateHandle.set(ANSWER_TEXT_KEY, value)
 
     val currentQuestionAnswer: Boolean
         get() = questionBank[currentIndex].answer

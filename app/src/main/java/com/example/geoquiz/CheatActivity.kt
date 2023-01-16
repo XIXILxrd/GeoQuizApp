@@ -5,14 +5,17 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.viewModels
 import com.example.geoquiz.databinding.ActivityCheatBinding
 
 const val EXTRA_ANSWER_SHOWN = "com.example.geoquiz.answer_shown"
-private const val EXTRA_ANSWER_IS_TRUE  = "om.example.geoquiz.answer_is_true"
+private const val EXTRA_ANSWER_IS_TRUE  = "com.example.geoquiz.answer_is_true"
 
 class CheatActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCheatBinding
+
+    private val quizViewModel: QuizViewModel by viewModels()
 
     private var answerIsTrue = false
 
@@ -25,13 +28,23 @@ class CheatActivity : AppCompatActivity() {
         answerIsTrue = intent.getBooleanExtra(EXTRA_ANSWER_IS_TRUE, false)
 
         binding.showAnswerButton.setOnClickListener {
-            val answerText = when {
+            quizViewModel.answerText = when {
                 answerIsTrue -> R.string.true_button
                 else -> R.string.false_button
             }
-            binding.answerTextView.setText(answerText)
-            setAnswerShownResult(true)
+            binding.answerTextView.setText(quizViewModel.answerText)
+            quizViewModel.answerIsShown = true
+
+            setAnswerShownResult(quizViewModel.answerIsShown)
         }
+
+        binding.answerTextView.setText(if (quizViewModel.answerText == 0) {
+            R.string.waiting_answer
+        }
+        else
+        {
+            quizViewModel.answerText
+        })
     }
 
     private fun setAnswerShownResult(isAnswerShown: Boolean) {

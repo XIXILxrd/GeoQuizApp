@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
 
     private val quizViewModel: QuizViewModel by viewModels()
 
-    private val cheatlauncher = registerForActivityResult(
+    private val cheatLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
             val answerIsTrue = quizViewModel.currentQuestionAnswer
             val intent = CheatActivity.newIntent(this@MainActivity, answerIsTrue)
 
-            cheatlauncher.launch(intent)
+            cheatLauncher.launch(intent)
         }
 
         updateQuestion()
