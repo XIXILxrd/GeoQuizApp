@@ -4,7 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 
 const val CURRENT_INDEX_KEY = "CURRENT_INDEX_KEY"
-const val IS_CHEATER_KEY = "IS_CHEATER_KEY"
 const val ANSWER_TEXT_KEY = "ANSWER_TEXT_KEY"
 const val ANSWER_IS_SHOWN = "ANSWER_IS_SHOWN"
 
@@ -22,11 +21,6 @@ class QuizViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel(
         Question(R.string.question_americas, true),
         Question(R.string.question_asia, true)
     )
-
-    var isCheater: Boolean
-        get() = savedStateHandle[IS_CHEATER_KEY] ?: false
-        set(value) = savedStateHandle.set(IS_CHEATER_KEY, value)
-
     var answerIsShown: Boolean
         get() = savedStateHandle[ANSWER_IS_SHOWN] ?: false
         set(value) = savedStateHandle.set(ANSWER_IS_SHOWN, value)
@@ -40,6 +34,12 @@ class QuizViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel(
 
     val currentQuestionText: Int
         get() = questionBank[currentIndex].textResId
+
+    var currentQuestionIsCheated: Boolean
+        get() = questionBank[currentIndex].isCheated
+        set(value) {
+            questionBank[currentIndex].isCheated = value
+        }
 
     fun moveToNext() {
         currentIndex = (currentIndex + 1) % questionBank.size

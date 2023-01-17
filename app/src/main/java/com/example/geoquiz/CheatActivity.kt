@@ -27,24 +27,31 @@ class CheatActivity : AppCompatActivity() {
 
         answerIsTrue = intent.getBooleanExtra(EXTRA_ANSWER_IS_TRUE, false)
 
+        binding.backButton.setOnClickListener {
+            finish()
+        }
+
         binding.showAnswerButton.setOnClickListener {
             quizViewModel.answerText = when {
                 answerIsTrue -> R.string.true_button
                 else -> R.string.false_button
             }
-            binding.answerTextView.setText(quizViewModel.answerText)
             quizViewModel.answerIsShown = true
 
-            setAnswerShownResult(quizViewModel.answerIsShown)
+            saveView(quizViewModel.answerIsShown)
         }
 
-        binding.answerTextView.setText(if (quizViewModel.answerText == 0) {
-            R.string.waiting_answer
+        saveView(quizViewModel.answerIsShown)
+    }
+
+    private fun saveView(isAnswerShown: Boolean) {
+        if (isAnswerShown) {
+            quizViewModel.currentQuestionIsCheated = true
+
+            binding.answerTextView.setText(quizViewModel.answerText)
+
+            setAnswerShownResult(quizViewModel.currentQuestionIsCheated)
         }
-        else
-        {
-            quizViewModel.answerText
-        })
     }
 
     private fun setAnswerShownResult(isAnswerShown: Boolean) {
