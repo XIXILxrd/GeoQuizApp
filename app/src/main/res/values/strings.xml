@@ -21,4 +21,7 @@
     <string name="cheat_button">Cheat!</string>
     <string name="judgment_toast">Cheating is wrong.</string>
     <string name="waiting_answer"> </string>
+    <string name="tokens_count">Tokens count:</string>
+    <string name="api_level">API level</string>
+    <string name="out_of_tokens_toast">Out of tokens! You should be less cheating.</string>
 </resources>

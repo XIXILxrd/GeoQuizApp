@@ -31,4 +31,20 @@ class QuizViewModelTest {
 
         assertTrue(quizViewModel.currentQuestionAnswer)
     }
+
+    @Test
+    fun tokenCountDecrease() {
+        val savedStateHandle = SavedStateHandle()
+        val quizViewModel = QuizViewModel(savedStateHandle)
+
+        assertEquals(3, quizViewModel.tokensCount)
+
+        quizViewModel.tokensCount--
+
+        assertEquals(2, quizViewModel.tokensCount)
+
+        quizViewModel.tokensCount--
+
+        assertEquals(1, quizViewModel.tokensCount)
+    }
 }

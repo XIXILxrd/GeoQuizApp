@@ -23,6 +23,8 @@ class MainActivity : AppCompatActivity() {
         if (result.resultCode == Activity.RESULT_OK) {
             quizViewModel.currentQuestionIsCheated =
                     result.data?.getBooleanExtra(EXTRA_ANSWER_SHOWN, false) ?: false
+
+            quizViewModel.tokensCount--
         }
     }
 
@@ -51,6 +53,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.cheatButton.setOnClickListener {
+
             val answerIsTrue = quizViewModel.currentQuestionAnswer
             val intent = CheatActivity.newIntent(this@MainActivity, answerIsTrue)
 
@@ -58,6 +61,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         updateQuestion()
+        updateTokensCounter()
     }
 
     override fun onStart() {
@@ -68,6 +72,9 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         Log.d(TAG, "onResume() called")
+
+        updateTokensCounter()
+        blockCheatButton()
     }
 
     override fun onPause() {
@@ -101,5 +108,18 @@ class MainActivity : AppCompatActivity() {
 
         Toast.makeText(this, messageResId, Toast.LENGTH_SHORT)
             .show()
+    }
+
+    private fun blockCheatButton() {
+        if (quizViewModel.tokensCount <= 0) {
+            binding.cheatButton.isClickable = quizViewModel.cheatButtonBlocked
+
+            Toast.makeText(this, R.string.out_of_tokens_toast, Toast.LENGTH_SHORT)
+                .show()
+        }
+    }
+
+    private fun updateTokensCounter() {
+        binding.tokensCounterView.text = quizViewModel.tokensCount.toString()
     }
 }

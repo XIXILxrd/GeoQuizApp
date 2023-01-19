@@ -6,8 +6,11 @@ import androidx.lifecycle.ViewModel
 const val CURRENT_INDEX_KEY = "CURRENT_INDEX_KEY"
 const val ANSWER_TEXT_KEY = "ANSWER_TEXT_KEY"
 const val ANSWER_IS_SHOWN = "ANSWER_IS_SHOWN"
+const val CHEAT_BUTTON_BLOCKED = "CHEAT_BUTTON_BLOCKED"
 
 class QuizViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() {
+
+    private val maximumTokens: Int = 3
 
     private var currentIndex: Int
         get() = savedStateHandle[CURRENT_INDEX_KEY] ?: 0
@@ -40,6 +43,14 @@ class QuizViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel(
         set(value) {
             questionBank[currentIndex].isCheated = value
         }
+
+    var tokensCount: Int
+        get() = savedStateHandle[ANSWER_IS_SHOWN] ?: maximumTokens
+        set(value) = savedStateHandle.set(ANSWER_IS_SHOWN, value)
+
+    var cheatButtonBlocked: Boolean
+        get() = savedStateHandle[CHEAT_BUTTON_BLOCKED] ?: false
+        set(value) = savedStateHandle.set(CHEAT_BUTTON_BLOCKED, value)
 
     fun moveToNext() {
         currentIndex = (currentIndex + 1) % questionBank.size
