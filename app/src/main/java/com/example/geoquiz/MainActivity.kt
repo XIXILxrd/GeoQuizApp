@@ -1,12 +1,16 @@
 package com.example.geoquiz
 
 import android.app.Activity
+import android.graphics.RenderEffect
+import android.graphics.Shader
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import com.example.geoquiz.databinding.ActivityMainBinding
 
 private const val TAG = "MainActivity"
@@ -29,6 +33,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "onCreate(Bundle?) called")
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -55,9 +60,12 @@ class MainActivity : AppCompatActivity() {
             val intent = CheatActivity.newIntent(this@MainActivity, answerIsTrue)
 
             cheatLauncher.launch(intent)
+
+            blockCheatButton()
         }
 
         updateQuestion()
+        updateTokensCounter()
     }
 
     override fun onStart() {
@@ -101,5 +109,15 @@ class MainActivity : AppCompatActivity() {
 
         Toast.makeText(this, messageResId, Toast.LENGTH_SHORT)
             .show()
+    }
+
+    private fun updateTokensCounter() {
+        binding.cheatTokensView?.text = quizViewModel.cheatTokens.toString()
+    }
+
+    private fun blockCheatButton() {
+        if (quizViewModel.cheatTokens <= 0) {
+            binding.cheatButton.isClickable = false
+        }
     }
 }
