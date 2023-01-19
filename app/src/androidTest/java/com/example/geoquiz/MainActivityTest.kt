@@ -1,5 +1,6 @@
 package com.example.geoquiz
 
+import androidx.lifecycle.SavedStateHandle
 import org.junit.Assert.*
 
 import androidx.test.core.app.ActivityScenario
@@ -52,5 +53,17 @@ class MainActivityTest {
 
         onView(withId(R.id.question_text_view))
             .check(matches(withText(R.string.question_oceans)))
+    }
+
+    @Test
+    fun tokensCounter() {
+        val savedStateHandle = SavedStateHandle()
+        val quizViewModel = QuizViewModel(savedStateHandle)
+
+        onView(withId(R.id.cheat_button)).perform(click())
+        onView(withId(R.id.show_answer_button)).perform(click())
+        onView(withId(R.id.back_button)).perform(click())
+
+        assertEquals(2, quizViewModel.cheatTokens)
     }
 }

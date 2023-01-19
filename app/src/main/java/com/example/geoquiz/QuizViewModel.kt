@@ -9,6 +9,8 @@ const val ANSWER_IS_SHOWN = "ANSWER_IS_SHOWN"
 
 class QuizViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() {
 
+    private val maximumTokens = 3
+
     private var currentIndex: Int
         get() = savedStateHandle[CURRENT_INDEX_KEY] ?: 0
         set(value) = savedStateHandle.set(CURRENT_INDEX_KEY, value)
@@ -21,6 +23,7 @@ class QuizViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel(
         Question(R.string.question_americas, true),
         Question(R.string.question_asia, true)
     )
+
     var answerIsShown: Boolean
         get() = savedStateHandle[ANSWER_IS_SHOWN] ?: false
         set(value) = savedStateHandle.set(ANSWER_IS_SHOWN, value)
@@ -41,6 +44,12 @@ class QuizViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel(
             questionBank[currentIndex].isCheated = value
         }
 
+    var cheatTokens: Int
+        get() = savedStateHandle[ANSWER_IS_SHOWN] ?: maximumTokens
+        set(value) {
+            if (value == cheatTokens - 1)
+                savedStateHandle[ANSWER_IS_SHOWN] = value
+        }
     fun moveToNext() {
         currentIndex = (currentIndex + 1) % questionBank.size
     }

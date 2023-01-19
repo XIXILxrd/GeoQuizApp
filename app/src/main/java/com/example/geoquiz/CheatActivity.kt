@@ -13,6 +13,7 @@ private const val EXTRA_ANSWER_IS_TRUE  = "com.example.geoquiz.answer_is_true"
 
 class CheatActivity : AppCompatActivity() {
 
+
     private lateinit var binding: ActivityCheatBinding
 
     private val quizViewModel: QuizViewModel by viewModels()
@@ -37,6 +38,8 @@ class CheatActivity : AppCompatActivity() {
                 else -> R.string.false_button
             }
             quizViewModel.answerIsShown = true
+
+            quizViewModel.cheatTokens--
 
             saveView(quizViewModel.answerIsShown)
         }
